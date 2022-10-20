@@ -84,7 +84,7 @@ void LinkedList<T>::insertOrdered(const T& newData)
   // If we had unsorted list
   if(!isSorted() ) 
   {
-    insertionSort();
+    *this = insertionSort();
   }
   // If we had an empty list
   if(empty())
