@@ -81,23 +81,18 @@
 template <typename T>
 void LinkedList<T>::insertOrdered(const T& newData) 
 {
-  // If we had unsorted list
-  if(!isSorted() ) 
-  {
-    *this = insertionSort();
-  }
   // If we had an empty list
   if(empty())
   {
     pushFront(newData);
   }
   // If we got a newData that less of head's data:
-  else if(newData < head_->data)
+  else if(newData <= head_->data)
   {
     pushFront(newData);
   }
   // If we got a newData that bigger of tail's data:
-  else if(newData > tail_->data)
+  else if(newData >= tail_->data)
   {
     pushBack(newData);
   }
@@ -110,7 +105,7 @@ void LinkedList<T>::insertOrdered(const T& newData)
     // and didn't insert a node
     while(cur)     
     {
-      if(forInsert->data < cur->data)
+      if(forInsert->data <= cur->data)
       {
         Node* prevNode = cur->prev;
         // Insert our new data between previous and current Nodes
@@ -127,7 +122,6 @@ void LinkedList<T>::insertOrdered(const T& newData)
       cur = cur->next;
     }
   }
-  
   
   // Hints:
   // Make your new node on the heap and then find where it needs to
@@ -245,7 +239,8 @@ void LinkedList<T>::insertOrdered(const T& newData)
  ********************************************************************/
 
 template <typename T>
-LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
+LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const 
+{
 
   // You can't edit the original instance of LinkedList that is calling
   // merge because the function is marked const, and the "other" input
@@ -264,13 +259,33 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   // the final result we want. This is what we will return at the end of
   // the function.
   LinkedList<T> merged;
-
-  // -----------------------------------------------------------
-  // TODO: Your code here!
-  // -----------------------------------------------------------
-  // Please implement this function according to the description
-  // above and in the instructions PDF.
-
+  
+  while(!left.empty() && !right.empty())
+  {
+    if(left.front() <= right.front())
+    {
+      merged.pushBack(left.front());
+      left.popFront();
+    }
+    else
+    {
+      merged.pushBack(right.front());
+      right.popFront();
+    }
+  }
+  // If we have rest elements in left list
+  while(!left.empty())
+  {
+    merged.pushBack(left.front());
+    left.popFront();
+  }
+  // Otherwise vice versa
+  while(!right.empty())
+  {
+    merged.pushBack(right.front());
+    right.popFront();
+  }
+  
   // Hints:
   // 1. Assuming that the left and right lists are already sorted, remember
   //    that the smallest items are already available at the front. You can
@@ -297,4 +312,3 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   // and an int.)
   return merged;
 }
-
